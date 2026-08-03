@@ -7,9 +7,16 @@ const ctrl = require("../utils/wrapController")(
 );
 const { exigirAutenticacao } = require("../middleware/auth");
 
+const fs = require("fs");
+
+const uploadDir = path.join(__dirname, "..", "..", "uploads");
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
-  destination: (req, file, cb) =>
-    cb(null, path.join(__dirname, "..", "..", "uploads")),
+  destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) =>
     cb(
       null,
